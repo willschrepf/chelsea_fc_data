@@ -1,0 +1,30 @@
+---
+title: "exploratory_analysis"
+author: "Will Schrepferman"
+date: "4/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+library(readxl)
+library(janitor)
+```
+
+```{r}
+match_data <- read_excel("chelsea_matches.xlsx") %>%
+  clean_names()
+
+match_data_prem_ucl <- match_data %>%
+  filter(comp == "Premier League" | comp == "Champions Lg") %>%
+  mutate(manager = ifelse(date <= "2021-01-25", "Lampard", "Tuchel"))
+
+match_data_prem_ucl %>%
+  ggplot(aes(x = date, y = x_g, color = manager)) +
+  geom_line()
+```
+
+
+
